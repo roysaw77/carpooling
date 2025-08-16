@@ -68,15 +68,21 @@ function displayRides() {
     const priceInfo = ride.price ? `<br>Price: <span class="price">RM ${ride.price.toFixed(2)}</span>` : '';
     const distanceInfo = ride.distance ? ` (Distance: ${ride.distance} km)` : '';
 
+    // Display simple car information if available
+    let carInfoHtml = '';
+    if (ride.car) {
+      carInfoHtml = `<br>🚗 <strong>${ride.car.name}</strong> - ${ride.car.color} - <strong>${ride.car.plateNumber}</strong>`;
+    }
+
     list.innerHTML += `
       <div class="ride">
         <div class="ride-header">
-          <strong>${ride.driver}</strong> → ${ride.destination}
+          <strong>${ride.driver}</strong>
         </div>
         <div class="ride-details">
-          From: ${ride.start}<br>
+          Route: ${ride.start} → ${ride.destination}<br>
           Time: ${new Date(ride.time).toLocaleString()}<br>
-          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}
+          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}
         </div>
         <div class="ride-actions">
           ${requestButtonHtml}

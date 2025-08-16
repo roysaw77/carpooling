@@ -47,6 +47,40 @@
             Note: If you reduce seats and there are existing requests, those passengers will be notified.
           </small>
         </div>
+
+        <!-- Simple Car Information -->
+        <div class="form-group">
+          <label for="edit-car-name">Car Name:</label>
+          <input type="text" id="edit-car-name" name="edit-car-name"
+            placeholder="e.g., Toyota Vios, Perodua Myvi, Honda City" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-car-color">Car Color:</label>
+          <select id="edit-car-color" name="edit-car-color" required>
+            <option value="">Select Color</option>
+            <option value="White">White</option>
+            <option value="Black">Black</option>
+            <option value="Silver">Silver</option>
+            <option value="Gray">Gray</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Orange">Orange</option>
+            <option value="Purple">Purple</option>
+            <option value="Brown">Brown</option>
+            <option value="Gold">Gold</option>
+            <option value="Maroon">Maroon</option>
+            <option value="Navy">Navy</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-plate-number">Number Plate:</label>
+          <input type="text" id="edit-plate-number" name="edit-plate-number" placeholder="e.g., ABC1234, KL5678"
+            required>
+        </div>
+
         <div class="form-actions">
           <button type="button" class="btn-cancel" onclick="closeEditRidePopup()">Cancel</button>
           <button type="button" class="btn-submit" onclick="saveRideChanges()">Save Changes</button>

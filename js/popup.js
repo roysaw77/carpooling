@@ -71,8 +71,13 @@ function publishRideFromPopup() {
   const time = document.getElementById('time').value;
   const seats = document.getElementById('seats').value;
 
-  if (!driver || !startId || !destinationId || !time) {
-    alert("Please fill in all fields.");
+  // Get simple car information
+  const carName = document.getElementById('car-name').value;
+  const carColor = document.getElementById('car-color').value;
+  const plateNumber = document.getElementById('plate-number').value;
+
+  if (!driver || !startId || !destinationId || !time || !carName || !carColor || !plateNumber) {
+    alert("Please fill in all fields including car information.");
     return;
   }
 
@@ -85,8 +90,22 @@ function publishRideFromPopup() {
     }
   }
 
+  // Create simple car information object
+  const carInfo = {
+    name: carName.trim(),
+    color: carColor,
+    plateNumber: plateNumber.trim().toUpperCase()
+  };
+
   // Get location names and calculate price
-  let ride = { driver, start: startId, destination: destinationId, time, seats };
+  let ride = {
+    driver,
+    start: startId,
+    destination: destinationId,
+    time,
+    seats,
+    car: carInfo
+  };
 
   if (window.LocationService) {
     const startLocation = window.LocationService.getLocationById(startId);
@@ -94,6 +113,7 @@ function publishRideFromPopup() {
     const tripInfo = window.LocationService.getTripInfo(startId, destinationId);
 
     ride = {
+      id: Date.now(),
       driver,
       start: startLocation ? startLocation.name : startId,
       destination: destinationLocation ? destinationLocation.name : destinationId,
@@ -102,7 +122,9 @@ function publishRideFromPopup() {
       time,
       seats,
       price: tripInfo.price,
-      distance: tripInfo.distance
+      distance: tripInfo.distance,
+      car: carInfo,
+      createdAt: new Date().toISOString()
     };
   }
 
@@ -111,6 +133,12 @@ function publishRideFromPopup() {
     window.addRide(ride);
   } else if (typeof rides !== 'undefined') {
     rides.push(ride);
+
+    // Save to localStorage
+    if (window.Storage) {
+      window.Storage.saveRides(rides);
+    }
+
     if (typeof displayRides === 'function') {
       displayRides();
     }
@@ -130,6 +158,11 @@ function clearFormFields() {
   document.getElementById('destination').value = '';
   document.getElementById('time').value = '';
   document.getElementById('seats').value = '1';
+
+  // Clear car information fields
+  document.getElementById('car-name').value = '';
+  document.getElementById('car-color').value = '';
+  document.getElementById('plate-number').value = '';
 }
 
 // Request Ride Popup Functions
