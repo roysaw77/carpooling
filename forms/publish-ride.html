@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publish Ride Form</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>Publish a Ride</h2>
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+      </div>
+      <form id="ride-form">
+        <div class="form-group">
+          <label for="driver">Driver Name:</label>
+          <input type="text" id="driver" name="driver" required>
+        </div>
+        <div class="form-group">
+          <label for="start">Start Location:</label>
+          <input type="text" id="start" name="start" required>
+        </div>
+        <div class="form-group">
+          <label for="destination">Destination:</label>
+          <input type="text" id="destination" name="destination" required>
+        </div>
+        <div class="form-group">
+          <label for="time">Date & Time:</label>
+          <input type="datetime-local" id="time" name="time" required>
+        </div>
+        <div class="form-group">
+          <label for="seats">Available Seats:</label>
+          <select id="seats" name="seats">
+            <option value="1">1 Seat</option>
+            <option value="2">2 Seats</option>
+            <option value="3">3 Seats</option>
+            <option value="4">4 Seats</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closePopup()">Cancel</button>
+          <button type="button" class="btn-submit" onclick="publishRideFromPopup()">Publish Ride</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/popup.js"></script>
+</body>
+
+</html>

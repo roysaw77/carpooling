@@ -1,0 +1,123 @@
+/* MMU Carpool Dashboard Styles */
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #2b3d52;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+}
+
+main {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  background: #2b3d52;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d293a;
+}
+
+.ride {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+/* Publish Ride Section Styles */
+.publish-ride-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.publish-ride-section h2 {
+  color: #2b3d52;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.publish-ride-section p {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.btn-primary {
+  background: #2b3d52;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(43, 61, 82, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: #1d293a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(43, 61, 82, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(43, 61, 82, 0.2);
+}
+
+/* Additional responsive styles */
+@media (max-width: 768px) {
+  main {
+    padding: 10px;
+  }
+
+  .card {
+    margin: 10px 0;
+    padding: 10px;
+  }
+}

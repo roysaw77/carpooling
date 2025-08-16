@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMU Carpool Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+
+  <header>
+    🚗 MMU Carpool Dashboard
+  </header>
+
+  <main>
+    <!-- Publish Ride Button -->
+    <div class="card">
+      <div class="publish-ride-section">
+        <h2>Share Your Ride</h2>
+        <p>Have a car and want to share your journey? Click below to publish your ride and help fellow students!</p>
+        <button class="btn-primary" onclick="openPopup()">
+          🚗 Publish a Ride
+        </button>
+      </div>
+    </div>
+
+    <!-- Ride board -->
+    <div class="card">
+      <h2>Available Rides</h2>
+      <div id="ride-list">
+        <!-- Rides will be displayed here dynamically -->
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+
+</html>
