@@ -105,6 +105,106 @@ button:hover {
   box-shadow: 0 2px 4px rgba(43, 61, 82, 0.2);
 }
 
+/* Role Selection Styles */
+.role-selection {
+  text-align: center;
+  padding: 20px;
+}
+
+.role-selection h2 {
+  color: #2b3d52;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.role-selection p {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.role-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-role {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  padding: 20px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-role small {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  margin: 0;
+}
+
+.btn-role:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.driver-btn {
+  color: #2b3d52;
+  border-color: #2b3d52;
+}
+
+.driver-btn:hover {
+  background: #2b3d52;
+  color: white;
+}
+
+.driver-btn.active {
+  background: #2b3d52;
+  color: white;
+  border-color: #2b3d52;
+}
+
+.seater-btn {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+.seater-btn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.seater-btn.active {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* Mobile responsiveness for role buttons */
+@media (max-width: 768px) {
+  .role-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-role {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
 /* Additional responsive styles */
 @media (max-width: 768px) {
   main {
@@ -339,4 +439,116 @@ button:hover {
     width: 100%;
     text-align: center;
   }
+}
+
+/* Request indicators and status styles */
+.requests-indicator {
+  color: #007bff;
+  font-weight: 600;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.request-status {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.request-status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.request-status.accepted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.request-status.declined {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.my-request {
+  border-left: 4px solid #007bff;
+}
+
+.my-request.accepted {
+  border-left-color: #28a745;
+}
+
+.my-request.declined {
+  border-left-color: #dc3545;
+}
+
+.driver-ride {
+  border-left: 4px solid #2b3d52;
+  background: #f8f9fa;
+}
+
+/* Passenger cards styling */
+.passenger-card {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.passenger-info h4 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.passenger-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.passenger-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-contact {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.btn-remove {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.btn-contact:hover {
+  background-color: #0056b3;
+}
+
+.btn-remove:hover {
+  background-color: #c82333;
+}
+
+.no-data {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin: 20px 0;
 }

@@ -3,7 +3,8 @@
 // Storage keys
 const STORAGE_KEYS = {
   RIDES: 'mmu_carpool_rides',
-  RIDE_REQUESTS: 'mmu_carpool_ride_requests'
+  RIDE_REQUESTS: 'mmu_carpool_ride_requests',
+  ACCEPTED_PASSENGERS: 'mmu_carpool_accepted_passengers'
 };
 
 // Local Storage Functions
@@ -48,11 +49,32 @@ const Storage = {
     }
   },
 
+  // Save accepted passengers to localStorage
+  saveAcceptedPassengers: function (passengers) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.ACCEPTED_PASSENGERS, JSON.stringify(passengers));
+    } catch (error) {
+      console.error('Error saving accepted passengers to localStorage:', error);
+    }
+  },
+
+  // Load accepted passengers from localStorage
+  loadAcceptedPassengers: function () {
+    try {
+      const savedPassengers = localStorage.getItem(STORAGE_KEYS.ACCEPTED_PASSENGERS);
+      return savedPassengers ? JSON.parse(savedPassengers) : [];
+    } catch (error) {
+      console.error('Error loading accepted passengers from localStorage:', error);
+      return [];
+    }
+  },
+
   // Clear all stored data (useful for debugging or reset)
   clearAll: function () {
     try {
       localStorage.removeItem(STORAGE_KEYS.RIDES);
       localStorage.removeItem(STORAGE_KEYS.RIDE_REQUESTS);
+      localStorage.removeItem(STORAGE_KEYS.ACCEPTED_PASSENGERS);
       console.log('All carpool data cleared from localStorage');
     } catch (error) {
       console.error('Error clearing localStorage:', error);

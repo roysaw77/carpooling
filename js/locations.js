@@ -24,7 +24,7 @@ const CYBERJAYA_LOCATIONS = [
 // Pricing configuration
 const PRICING_CONFIG = {
   basePrice: 1.00,          // Base price in RM
-  pricePerKm: 0.50,         // Price per kilometer
+  pricePerKm: 0.20,         // Price per kilometer
   maxPrice: 15.00           // Maximum price cap
 };
 

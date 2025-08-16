@@ -562,3 +562,151 @@ function updatePriceDisplay() {
     priceBreakdown.textContent = breakdownText;
   }
 }
+
+// Request Ride Popup Functions
+let currentRideIndex = null;
+
+function openRideRequestPopup(rideIndex) {
+  currentRideIndex = rideIndex;
+
+  // Load the request popup content if it doesn't exist
+  if (!document.getElementById('request-popup-overlay')) {
+    loadRequestPopupForm();
+  } else {
+    showRequestPopup();
+  }
+}
+
+function showRequestPopup() {
+  const overlay = document.getElementById('request-popup-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+}
+
+function closeRequestPopup() {
+  const overlay = document.getElementById('request-popup-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+  }
+  currentRideIndex = null;
+}
+
+function loadRequestPopupForm() {
+  fetch('forms/request-ride.html')
+    .then(response => response.text())
+    .then(html => {
+      // Extract only the popup content from the loaded HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const popupOverlay = doc.getElementById('request-popup-overlay');
+
+      if (popupOverlay) {
+        document.body.appendChild(popupOverlay);
+        showRequestPopup();
+
+        // Add event listener for clicking outside the popup to close it
+        popupOverlay.addEventListener('click', function (e) {
+          if (e.target === popupOverlay) {
+            closeRequestPopup();
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error loading request ride form:', error);
+      alert('Error loading request form. Please try again.');
+    });
+}
+
+function submitRideRequest() {
+  const passengerName = document.getElementById('passenger-name').value;
+  const studentId = document.getElementById('student-id').value;
+  const contactNumber = document.getElementById('contact-number').value;
+  const passengerCount = document.getElementById('passenger-count').value;
+  const additionalNotes = document.getElementById('additional-notes').value;
+
+  // Validate required fields
+  if (!passengerName || !studentId || !contactNumber || !passengerCount) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  // Validate student ID format (10 digits)
+  if (!/^\d{10}$/.test(studentId)) {
+    alert("Please enter a valid 10-digit Student ID.");
+    return;
+  }
+
+  const numPassengers = parseInt(passengerCount);
+  if (isNaN(numPassengers) || numPassengers < 1) {
+    alert("Please select a valid number of passengers.");
+    return;
+  }
+
+  if (currentRideIndex === null) {
+    alert("Error: No ride selected. Please try again.");
+    return;
+  }
+
+  const ride = window.rides[currentRideIndex];
+  const availableSeats = parseInt(ride.seats);
+
+  if (numPassengers > availableSeats) {
+    alert(`Sorry, only ${availableSeats} seats are available.`);
+    return;
+  }
+
+  // Create ride request
+  const request = {
+    rideIndex: currentRideIndex,
+    passengerName: passengerName,
+    studentId: studentId,
+    contactNumber: contactNumber,
+    passengerCount: numPassengers,
+    additionalNotes: additionalNotes,
+    driver: ride.driver,
+    destination: ride.destination,
+    requestTime: new Date().toISOString(),
+    status: 'pending'
+  };
+
+  // Add to requests
+  window.rideRequests.push(request);
+
+  // Reduce available seats
+  window.rides[currentRideIndex].seats = (availableSeats - numPassengers).toString();
+
+  // Save to localStorage
+  if (window.Storage) {
+    window.Storage.saveRideRequests(window.rideRequests);
+    window.Storage.saveRides(window.rides);
+  }
+
+  // Refresh displays
+  if (typeof displayRides === 'function') displayRides();
+  if (typeof displayAvailableRides === 'function') displayAvailableRides();
+  if (typeof displayRideRequests === 'function') displayRideRequests();
+  if (typeof displayDriverRequests === 'function') displayDriverRequests();
+
+  // Clear form and close popup
+  clearRequestForm();
+  closeRequestPopup();
+
+  alert(`Request sent successfully! The driver will review your request.`);
+}
+
+function clearRequestForm() {
+  document.getElementById('passenger-name').value = '';
+  document.getElementById('student-id').value = '';
+  document.getElementById('contact-number').value = '';
+  document.getElementById('passenger-count').value = '';
+  document.getElementById('additional-notes').value = '';
+}
+
+// Make functions globally available
+window.openRideRequestPopup = openRideRequestPopup;
+window.closeRequestPopup = closeRequestPopup;
+window.submitRideRequest = submitRideRequest;

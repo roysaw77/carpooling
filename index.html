@@ -16,38 +16,121 @@
   </header>
 
   <main>
-    <!-- Publish Ride Button -->
+    <!-- User Role Selection -->
     <div class="card">
-      <div class="publish-ride-section">
-        <h2>Share Your Ride</h2>
-        <p>Have a car and want to share your journey? Click below to publish your ride and help fellow students!</p>
-        <button class="btn-primary" onclick="openPopup()">
-          🚗 Publish a Ride
-        </button>
+      <div class="role-selection">
+        <h2>Select Your Role</h2>
+        <p>Choose whether you're offering a ride or looking for one:</p>
+        <div class="role-buttons">
+          <button class="btn-role driver-btn" id="driver-btn" onclick="switchToDriverMode()">
+            🚗 Driver
+            <small>I'm offering a ride</small>
+          </button>
+          <button class="btn-role seater-btn" id="seater-btn" onclick="switchToSeaterMode()">
+            🎒 Seater
+            <small>I need a ride</small>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Ride board -->
-    <div class="card">
-      <h2>Available Rides</h2>
-      <div id="ride-list">
-        <!-- Rides will be displayed here dynamically -->
+    <!-- Driver Mode Content -->
+    <div id="driver-mode" style="display: none;">
+      <div class="card">
+        <div class="publish-ride-section">
+          <h2>Share Your Ride</h2>
+          <p>Have a car and want to share your journey? Click below to publish your ride and help fellow students!</p>
+          <button class="btn-primary" onclick="openPopup()">
+            🚗 Publish a Ride
+          </button>
+        </div>
+      </div>
+
+      <!-- My Published Rides -->
+      <div class="card">
+        <h2>My Published Rides</h2>
+        <div id="driver-ride-list">
+          <!-- Driver's own rides will be displayed here -->
+        </div>
+      </div>
+
+      <!-- Ride Requests Section (for drivers to see who requested rides) -->
+      <div class="card" id="driver-requests-section" style="display: none;">
+        <h2>🎯 Ride Requests</h2>
+        <div id="driver-requests-list">
+          <!-- Ride requests will be displayed here -->
+        </div>
+      </div>
+
+      <!-- My Passengers Section (for drivers to see accepted passengers) -->
+      <div class="card" id="my-passengers-section" style="display: none;">
+        <h2>👥 My Passengers</h2>
+        <div id="my-passengers-list">
+          <!-- Accepted passengers will be displayed here -->
+        </div>
       </div>
     </div>
 
-    <!-- Ride Requests Section (for drivers to see who requested rides) -->
-    <div class="card" id="requests-section" style="display: none;">
-      <h2>🎯 Ride Requests</h2>
-      <div id="requests-list">
-        <!-- Ride requests will be displayed here -->
+    <!-- Seater Mode Content -->
+    <div id="seater-mode" style="display: none;">
+      <!-- Available Rides for Seaters -->
+      <div class="card">
+        <h2>Available Rides</h2>
+        <div id="seater-ride-list">
+          <!-- Available rides will be displayed here for seaters -->
+        </div>
+      </div>
+
+      <!-- My Ride Requests -->
+      <div class="card" id="my-requests-section" style="display: none;">
+        <h2>📋 My Ride Requests</h2>
+        <div id="my-requests-list">
+          <!-- User's own ride requests will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Legacy content (hidden by default) -->
+    <div id="legacy-content" style="display: none;">
+      <!-- Publish Ride Button -->
+      <div class="card">
+        <div class="publish-ride-section">
+          <h2>Share Your Ride</h2>
+          <p>Have a car and want to share your journey? Click below to publish your ride and help fellow students!</p>
+          <button class="btn-primary" onclick="openPopup()">
+            🚗 Publish a Ride
+          </button>
+        </div>
+      </div>
+
+      <!-- Ride board -->
+      <div class="card">
+        <h2>Available Rides</h2>
+        <div id="ride-list">
+          <!-- Rides will be displayed here dynamically -->
+        </div>
+      </div>
+
+      <!-- Ride Requests Section (for drivers to see who requested rides) -->
+      <div class="card" id="requests-section" style="display: none;">
+        <h2>🎯 Ride Requests</h2>
+        <div id="requests-list">
+          <!-- Ride requests will be displayed here -->
+        </div>
       </div>
     </div>
   </main>
 
   <script src="js/locations.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/globals.js"></script>
+  <script src="js/roles.js"></script>
+  <script src="js/publish.js"></script>
+  <script src="js/rides.js"></script>
+  <script src="js/requests.js"></script>
+  <script src="js/passengers.js"></script>
   <script src="js/popup.js"></script>
+  <script src="js/app-main.js"></script>
 </body>
 
 </html>
