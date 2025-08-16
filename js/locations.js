@@ -23,10 +23,9 @@ const CYBERJAYA_LOCATIONS = [
 
 // Pricing configuration
 const PRICING_CONFIG = {
-  basePrice: 3.00,          // Base price in RM
-  pricePerKm: 0.50,         // Price per kilometer equivalent
-  maxPrice: 15.00,          // Maximum price cap
-  studentDiscount: 0.1      // 10% discount for students
+  basePrice: 1.00,          // Base price in RM
+  pricePerKm: 0.50,         // Price per kilometer
+  maxPrice: 15.00           // Maximum price cap
 };
 
 // Location and Pricing Functions
@@ -63,16 +62,11 @@ const LocationService = {
   },
 
   // Calculate price based on distance using two-pointer approach
-  calculatePrice: function (startId, endId, isStudent = false) {
+  calculatePrice: function (startId, endId) {
     const distance = this.calculateDistance(startId, endId);
 
-    // Base calculation: base price + (distance * price per unit)
+    // Base calculation: base price + (distance * price per km)
     let price = PRICING_CONFIG.basePrice + (distance * PRICING_CONFIG.pricePerKm);
-
-    // Apply student discount if applicable
-    if (isStudent) {
-      price = price * (1 - PRICING_CONFIG.studentDiscount);
-    }
 
     // Apply maximum price cap
     price = Math.min(price, PRICING_CONFIG.maxPrice);
@@ -82,22 +76,20 @@ const LocationService = {
   },
 
   // Get detailed trip information
-  getTripInfo: function (startId, endId, isStudent = false) {
+  getTripInfo: function (startId, endId) {
     const startLocation = this.getLocationById(startId);
     const endLocation = this.getLocationById(endId);
     const distance = this.calculateDistance(startId, endId);
-    const price = this.calculatePrice(startId, endId, isStudent);
+    const price = this.calculatePrice(startId, endId);
 
     return {
       start: startLocation,
       end: endLocation,
       distance: distance,
       price: price,
-      isStudent: isStudent,
       priceBreakdown: {
         basePrice: PRICING_CONFIG.basePrice,
         distanceCharge: distance * PRICING_CONFIG.pricePerKm,
-        studentDiscount: isStudent ? (PRICING_CONFIG.basePrice + distance * PRICING_CONFIG.pricePerKm) * PRICING_CONFIG.studentDiscount : 0,
         finalPrice: price
       }
     };

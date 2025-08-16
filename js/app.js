@@ -66,7 +66,7 @@ function displayRides() {
 
     // Display price information if available
     const priceInfo = ride.price ? `<br>Price: <span class="price">RM ${ride.price.toFixed(2)}</span>` : '';
-    const distanceInfo = ride.distance ? ` (Distance: ${ride.distance} units)` : '';
+    const distanceInfo = ride.distance ? ` (Distance: ${ride.distance} km)` : '';
 
     list.innerHTML += `
       <div class="ride">
@@ -189,7 +189,6 @@ function displayRideRequests() {
           <p><strong>Student ID:</strong> ${request.studentId}</p>
           <p><strong>Contact:</strong> ${request.contactNumber}</p>
           <p><strong>Passengers:</strong> ${request.passengerCount} person(s)</p>
-          <p><strong>Pickup Location:</strong> ${request.pickupLocation}</p>
           <p><strong>For Ride:</strong> ${request.driver} → ${request.destination}</p>
           ${request.additionalNotes ? `<p><strong>Notes:</strong> ${request.additionalNotes}</p>` : ''}
         </div>

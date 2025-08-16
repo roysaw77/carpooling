@@ -91,7 +91,7 @@ function publishRideFromPopup() {
   if (window.LocationService) {
     const startLocation = window.LocationService.getLocationById(startId);
     const destinationLocation = window.LocationService.getLocationById(destinationId);
-    const tripInfo = window.LocationService.getTripInfo(startId, destinationId, true);
+    const tripInfo = window.LocationService.getTripInfo(startId, destinationId);
 
     ride = {
       driver,
@@ -201,11 +201,10 @@ function submitRideRequest() {
   const studentId = document.getElementById('student-id').value;
   const contactNumber = document.getElementById('contact-number').value;
   const passengerCount = document.getElementById('passenger-count').value;
-  const pickupLocation = document.getElementById('pickup-location').value;
   const additionalNotes = document.getElementById('additional-notes').value;
 
   // Validate required fields
-  if (!passengerName || !studentId || !contactNumber || !passengerCount || !pickupLocation) {
+  if (!passengerName || !studentId || !contactNumber || !passengerCount) {
     alert("Please fill in all required fields.");
     return;
   }
@@ -229,7 +228,6 @@ function submitRideRequest() {
     studentId,
     contactNumber,
     passengerCount: parseInt(passengerCount),
-    pickupLocation,
     additionalNotes,
     rideIndex: window.selectedRideIndex,
     driver: selectedRide.driver,
@@ -279,7 +277,6 @@ function clearRequestFormFields() {
     document.getElementById('student-id').value = '';
     document.getElementById('contact-number').value = '';
     document.getElementById('passenger-count').value = '';
-    document.getElementById('pickup-location').value = '';
     document.getElementById('additional-notes').value = '';
   }
 }
@@ -490,12 +487,6 @@ function initializeLocationDropdowns() {
       destinationSelect.innerHTML = locationOptions;
       destinationSelect.addEventListener('change', updatePriceDisplay);
     }
-
-    // Populate pickup location dropdown (for request ride form)
-    const pickupSelect = document.getElementById('pickup-location');
-    if (pickupSelect) {
-      pickupSelect.innerHTML = locationOptions;
-    }
   }
 }
 
@@ -522,20 +513,17 @@ function updatePriceDisplay() {
     return;
   }
 
-  // Calculate trip info (assuming student discount for now)
-  const tripInfo = window.LocationService.getTripInfo(startId, destinationId, true);
+  // Calculate trip info
+  const tripInfo = window.LocationService.getTripInfo(startId, destinationId);
 
   // Display price information
   if (priceDisplay && priceAmount && priceBreakdown) {
     priceDisplay.style.display = 'block';
     priceAmount.textContent = `RM ${tripInfo.price.toFixed(2)}`;
 
-    let breakdownText = `Distance: ${tripInfo.distance} units | Base: RM ${tripInfo.priceBreakdown.basePrice.toFixed(2)}`;
+    let breakdownText = `Distance: ${tripInfo.distance} km | Base: RM ${tripInfo.priceBreakdown.basePrice.toFixed(2)}`;
     if (tripInfo.priceBreakdown.distanceCharge > 0) {
       breakdownText += ` | Distance charge: RM ${tripInfo.priceBreakdown.distanceCharge.toFixed(2)}`;
-    }
-    if (tripInfo.isStudent) {
-      breakdownText += ` | Student discount: -RM ${tripInfo.priceBreakdown.studentDiscount.toFixed(2)}`;
     }
 
     priceBreakdown.textContent = breakdownText;
