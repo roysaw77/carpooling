@@ -32,13 +32,18 @@ function displayRides() {
   }
 
   rides.forEach((ride, index) => {
+    const seatsAvailable = parseInt(ride.seats);
+    const buttonHtml = seatsAvailable > 0
+      ? `<button onclick="requestRide(${index})" class="request-btn">Request Ride (${seatsAvailable} seats left)</button>`
+      : `<button disabled class="request-btn-disabled">No Seats Available</button>`;
+
     list.innerHTML += `
       <div class="ride">
         <strong>${ride.driver}</strong> → ${ride.destination}<br>
         From: ${ride.start}<br>
         Time: ${new Date(ride.time).toLocaleString()}<br>
-        Seats: ${ride.seats}<br>
-        <button onclick="requestRide(${index})">Request Ride</button>
+        Available Seats: ${seatsAvailable}<br>
+        ${buttonHtml}
       </div>
     `;
   });
@@ -46,9 +51,12 @@ function displayRides() {
 
 function requestRide(index) {
   if (index >= 0 && index < rides.length) {
-    alert("Request sent to " + rides[index].driver);
-    // Here you could add more functionality like removing the seat count
-    // or adding the user to a passenger list
+    // Store the selected ride for the request
+    window.selectedRideIndex = index;
+    window.selectedRide = rides[index];
+
+    // Open the request ride popup
+    openRequestPopup();
   }
 }
 
@@ -63,7 +71,75 @@ function clearForm() {
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
   displayRides(); // Show initial empty state
+  displayRideRequests(); // Show initial requests
 });
+
+// Function to display ride requests
+function displayRideRequests() {
+  const requestsList = document.getElementById('requests-list');
+  const requestsSection = document.getElementById('requests-section');
+
+  if (!window.rideRequests || window.rideRequests.length === 0) {
+    requestsSection.style.display = 'none';
+    return;
+  }
+
+  requestsSection.style.display = 'block';
+  requestsList.innerHTML = "";
+
+  window.rideRequests.forEach((request, index) => {
+    requestsList.innerHTML += `
+      <div class="request">
+        <div class="request-header">
+          <strong>📞 ${request.passengerName}</strong>
+          <span class="request-time">${new Date(request.requestTime).toLocaleString()}</span>
+        </div>
+        <div class="request-details">
+          <p><strong>Student ID:</strong> ${request.studentId}</p>
+          <p><strong>Contact:</strong> ${request.contactNumber}</p>
+          <p><strong>Passengers:</strong> ${request.passengerCount} person(s)</p>
+          <p><strong>Pickup Location:</strong> ${request.pickupLocation}</p>
+          <p><strong>For Ride:</strong> ${request.driver} → ${request.destination}</p>
+          ${request.additionalNotes ? `<p><strong>Notes:</strong> ${request.additionalNotes}</p>` : ''}
+        </div>
+        <div class="request-actions">
+          <button onclick="acceptRequest(${index})" class="btn-accept">✅ Accept</button>
+          <button onclick="declineRequest(${index})" class="btn-decline">❌ Decline</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function acceptRequest(index) {
+  if (window.rideRequests && window.rideRequests[index]) {
+    const request = window.rideRequests[index];
+    alert(`Great! You've accepted ${request.passengerName}'s request. Contact them at ${request.contactNumber} to arrange pickup details.`);
+
+    // Remove the request from the list
+    window.rideRequests.splice(index, 1);
+    displayRideRequests();
+  }
+}
+
+function declineRequest(index) {
+  if (window.rideRequests && window.rideRequests[index]) {
+    const request = window.rideRequests[index];
+
+    // Return the seats back to the ride
+    const rideIndex = request.rideIndex;
+    if (rides[rideIndex]) {
+      rides[rideIndex].seats = (parseInt(rides[rideIndex].seats) + request.passengerCount).toString();
+      displayRides();
+    }
+
+    alert(`Request from ${request.passengerName} has been declined. The seats have been made available again.`);
+
+    // Remove the request from the list
+    window.rideRequests.splice(index, 1);
+    displayRideRequests();
+  }
+}
 
 // Utility functions for future enhancements
 function validateForm(driver, start, destination, time) {

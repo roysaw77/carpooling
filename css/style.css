@@ -121,3 +121,149 @@ button:hover {
     padding: 10px;
   }
 }
+
+/* Request Ride Button Styles */
+.request-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.request-btn:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e6f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.request-btn-disabled {
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: not-allowed;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.ride {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+  transition: background-color 0.2s ease;
+}
+
+.ride:hover {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px 10px;
+}
+
+/* Ride Requests Styles */
+.request {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.request:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.request-header strong {
+  color: #2b3d52;
+  font-size: 18px;
+}
+
+.request-time {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.request-details {
+  margin-bottom: 15px;
+}
+
+.request-details p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #495057;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-accept {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-accept:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e6f 100%);
+  transform: translateY(-1px);
+}
+
+.btn-decline {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.btn-decline:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  transform: translateY(-1px);
+}
+
+/* Mobile responsiveness for requests */
+@media (max-width: 768px) {
+  .request-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .request-actions {
+    flex-direction: column;
+  }
+
+  .btn-accept,
+  .btn-decline {
+    width: 100%;
+  }
+}

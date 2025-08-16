@@ -160,3 +160,74 @@
     margin: 5px 0;
   }
 }
+
+/* Additional styles for request ride form */
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #2b3d52;
+  box-shadow: 0 0 0 2px rgba(43, 61, 82, 0.1);
+}
+
+small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input[type="tel"]:focus {
+  outline: none;
+  border-color: #2b3d52;
+  box-shadow: 0 0 0 2px rgba(43, 61, 82, 0.1);
+}
+
+/* Input validation styles */
+input:invalid {
+  border-color: #dc3545;
+}
+
+input:valid {
+  border-color: #28a745;
+}
+
+/* Form group spacing for request form */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+/* Enhanced button styling */
+.btn-submit {
+  background: linear-gradient(135deg, #2b3d52 0%, #1d293a 100%);
+  box-shadow: 0 2px 4px rgba(43, 61, 82, 0.2);
+}
+
+.btn-submit:hover {
+  background: linear-gradient(135deg, #1d293a 0%, #0f1419 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(43, 61, 82, 0.3);
+}
