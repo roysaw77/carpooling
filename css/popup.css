@@ -231,3 +231,47 @@ input:valid {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(43, 61, 82, 0.3);
 }
+
+/* Price Display Styles */
+.price-info {
+  background: #e8f5e8;
+  border: 1px solid #28a745;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.price-info #price-amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.price-info small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 12px;
+}
+
+/* Location Select Styling */
+select optgroup {
+  font-weight: bold;
+  color: #2b3d52;
+  background: #f8f9fa;
+}
+
+select option {
+  padding: 5px;
+  font-weight: normal;
+}
+
+/* Improved form layout for location selection */
+.form-group select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+  appearance: none;
+}

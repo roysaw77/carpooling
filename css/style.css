@@ -59,11 +59,6 @@ button:hover {
   background: #1d293a;
 }
 
-.ride {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-}
-
 /* Publish Ride Section Styles */
 .publish-ride-section {
   text-align: center;
@@ -151,18 +146,6 @@ button:hover {
   cursor: not-allowed;
   font-size: 14px;
   opacity: 0.6;
-}
-
-.ride {
-  border-bottom: 1px solid #ddd;
-  padding: 15px 0;
-  transition: background-color 0.2s ease;
-}
-
-.ride:hover {
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  padding: 15px 10px;
 }
 
 /* Ride Requests Styles */
@@ -265,5 +248,95 @@ button:hover {
   .btn-accept,
   .btn-decline {
     width: 100%;
+  }
+}
+
+/* Ride Actions Styles */
+.ride-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  color: #212529;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.edit-btn:hover {
+  background: linear-gradient(135deg, #ffb300 0%, #ffa000 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.delete-btn:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+/* Enhanced ride container */
+.ride {
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.ride:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.ride:last-child {
+  border-bottom: none;
+}
+
+/* Mobile responsiveness for ride actions */
+@media (max-width: 768px) {
+  .ride-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .request-btn,
+  .edit-btn,
+  .delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .request-btn-disabled {
+    width: 100%;
+    text-align: center;
   }
 }

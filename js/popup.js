@@ -36,6 +36,10 @@ function loadPopupForm() {
 
       if (popupOverlay) {
         document.body.appendChild(popupOverlay);
+
+        // Initialize location dropdowns
+        initializeLocationDropdowns();
+
         showPopup();
 
         // Add event listener for clicking outside the popup to close it
@@ -62,17 +66,45 @@ function loadPopupForm() {
 // Enhanced publish ride function for popup
 function publishRideFromPopup() {
   const driver = document.getElementById('driver').value;
-  const start = document.getElementById('start').value;
-  const destination = document.getElementById('destination').value;
+  const startId = document.getElementById('start').value;
+  const destinationId = document.getElementById('destination').value;
   const time = document.getElementById('time').value;
   const seats = document.getElementById('seats').value;
 
-  if (!driver || !start || !destination || !time) {
+  if (!driver || !startId || !destinationId || !time) {
     alert("Please fill in all fields.");
     return;
   }
 
-  const ride = { driver, start, destination, time, seats };
+  // Validate trip
+  if (window.LocationService) {
+    const validation = window.LocationService.validateTrip(startId, destinationId);
+    if (!validation.valid) {
+      alert(validation.message);
+      return;
+    }
+  }
+
+  // Get location names and calculate price
+  let ride = { driver, start: startId, destination: destinationId, time, seats };
+
+  if (window.LocationService) {
+    const startLocation = window.LocationService.getLocationById(startId);
+    const destinationLocation = window.LocationService.getLocationById(destinationId);
+    const tripInfo = window.LocationService.getTripInfo(startId, destinationId, true);
+
+    ride = {
+      driver,
+      start: startLocation ? startLocation.name : startId,
+      destination: destinationLocation ? destinationLocation.name : destinationId,
+      startId: parseInt(startId),
+      destinationId: parseInt(destinationId),
+      time,
+      seats,
+      price: tripInfo.price,
+      distance: tripInfo.distance
+    };
+  }
 
   // Add to rides array (this should be accessible from main app)
   if (typeof window.addRide === 'function') {
@@ -137,6 +169,10 @@ function loadRequestPopupForm() {
 
       if (popupOverlay) {
         document.body.appendChild(popupOverlay);
+
+        // Initialize location dropdowns for request form
+        initializeLocationDropdowns();
+
         showRequestPopup();
 
         // Add event listener for clicking outside the popup to close it
@@ -201,15 +237,26 @@ function submitRideRequest() {
     requestTime: new Date().toISOString()
   };
 
-  // Store the request (in a real app, this would be sent to a server)
+  // Store the request and save to localStorage
   if (!window.rideRequests) {
     window.rideRequests = [];
   }
   window.rideRequests.push(rideRequest);
 
+  // Save ride requests to localStorage
+  if (window.Storage) {
+    window.Storage.saveRideRequests(window.rideRequests);
+  }
+
   // Update available seats
   if (selectedRide) {
     selectedRide.seats = (parseInt(selectedRide.seats) - parseInt(passengerCount)).toString();
+
+    // Save updated rides to localStorage
+    if (window.Storage && window.rides) {
+      window.Storage.saveRides(window.rides);
+    }
+
     if (typeof window.displayRides === 'function') {
       window.displayRides();
     }
@@ -279,3 +326,218 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Edit Ride Popup Functions
+function openEditRidePopup() {
+  // Load the edit popup content if it doesn't exist
+  if (!document.getElementById('edit-ride-popup-overlay')) {
+    loadEditRidePopupForm();
+  } else {
+    populateEditForm();
+    showEditRidePopup();
+  }
+}
+
+function showEditRidePopup() {
+  const overlay = document.getElementById('edit-ride-popup-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+}
+
+function closeEditRidePopup() {
+  const overlay = document.getElementById('edit-ride-popup-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Restore scrolling
+  }
+}
+
+function loadEditRidePopupForm() {
+  fetch('forms/edit-ride.html')
+    .then(response => response.text())
+    .then(html => {
+      // Extract only the popup content from the loaded HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const popupOverlay = doc.getElementById('edit-ride-popup-overlay');
+
+      if (popupOverlay) {
+        document.body.appendChild(popupOverlay);
+        populateEditForm();
+        showEditRidePopup();
+
+        // Add event listener for clicking outside the popup to close it
+        popupOverlay.addEventListener('click', function (e) {
+          if (e.target === popupOverlay) {
+            closeEditRidePopup();
+          }
+        });
+
+        // Add escape key listener
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            closeEditRidePopup();
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error loading edit popup form:', error);
+      alert('Error loading the edit form. Please try again.');
+    });
+}
+
+function populateEditForm() {
+  if (window.editingRide) {
+    const ride = window.editingRide;
+
+    // Populate form fields with current ride data
+    document.getElementById('edit-driver').value = ride.driver;
+    document.getElementById('edit-start').value = ride.start;
+    document.getElementById('edit-destination').value = ride.destination;
+    document.getElementById('edit-time').value = ride.time;
+    document.getElementById('edit-seats').value = ride.seats;
+  }
+}
+
+function saveRideChanges() {
+  const driver = document.getElementById('edit-driver').value;
+  const start = document.getElementById('edit-start').value;
+  const destination = document.getElementById('edit-destination').value;
+  const time = document.getElementById('edit-time').value;
+  const seats = document.getElementById('edit-seats').value;
+
+  // Validate required fields
+  if (!driver || !start || !destination || !time) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  if (window.editingRideIndex !== undefined && window.rides) {
+    const oldSeats = parseInt(window.editingRide.seats);
+    const newSeats = parseInt(seats);
+
+    // Update the ride
+    window.rides[window.editingRideIndex] = {
+      driver,
+      start,
+      destination,
+      time,
+      seats
+    };
+
+    // Handle seat changes - if seats reduced, check requests
+    if (newSeats < oldSeats && window.rideRequests) {
+      const affectedRequests = window.rideRequests.filter(request =>
+        request.rideIndex === window.editingRideIndex
+      );
+
+      let totalRequestedSeats = affectedRequests.reduce((total, request) =>
+        total + request.passengerCount, 0
+      );
+
+      if (totalRequestedSeats > newSeats) {
+        alert(`Warning: You've reduced seats but there are ${totalRequestedSeats} seats already requested. Please contact the passengers to resolve this.`);
+      }
+    }
+
+    // Update any related ride requests with new ride info
+    if (window.rideRequests) {
+      window.rideRequests.forEach(request => {
+        if (request.rideIndex === window.editingRideIndex) {
+          request.driver = driver;
+          request.destination = destination;
+        }
+      });
+
+      if (typeof window.displayRideRequests === 'function') {
+        window.displayRideRequests();
+      }
+    }
+
+    // Refresh the rides display
+    if (typeof window.displayRides === 'function') {
+      window.displayRides();
+    }
+
+    // Close popup and show success message
+    closeEditRidePopup();
+    showSuccessMessage('Ride updated successfully!');
+
+    // Clear editing variables
+    window.editingRideIndex = undefined;
+    window.editingRide = undefined;
+  }
+}
+
+// Location and Price Management Functions
+function initializeLocationDropdowns() {
+  if (window.LocationService) {
+    const locationOptions = window.LocationService.generateLocationOptions();
+
+    // Populate start location dropdown
+    const startSelect = document.getElementById('start');
+    if (startSelect) {
+      startSelect.innerHTML = locationOptions;
+      startSelect.addEventListener('change', updatePriceDisplay);
+    }
+
+    // Populate destination dropdown
+    const destinationSelect = document.getElementById('destination');
+    if (destinationSelect) {
+      destinationSelect.innerHTML = locationOptions;
+      destinationSelect.addEventListener('change', updatePriceDisplay);
+    }
+
+    // Populate pickup location dropdown (for request ride form)
+    const pickupSelect = document.getElementById('pickup-location');
+    if (pickupSelect) {
+      pickupSelect.innerHTML = locationOptions;
+    }
+  }
+}
+
+function updatePriceDisplay() {
+  const startId = document.getElementById('start')?.value;
+  const destinationId = document.getElementById('destination')?.value;
+  const priceDisplay = document.getElementById('price-display');
+  const priceAmount = document.getElementById('price-amount');
+  const priceBreakdown = document.getElementById('price-breakdown');
+
+  if (!startId || !destinationId || !window.LocationService) {
+    if (priceDisplay) priceDisplay.style.display = 'none';
+    return;
+  }
+
+  // Validate trip
+  const validation = window.LocationService.validateTrip(startId, destinationId);
+  if (!validation.valid) {
+    if (priceDisplay) priceDisplay.style.display = 'none';
+    if (destinationId) {
+      alert(validation.message);
+      document.getElementById('destination').value = '';
+    }
+    return;
+  }
+
+  // Calculate trip info (assuming student discount for now)
+  const tripInfo = window.LocationService.getTripInfo(startId, destinationId, true);
+
+  // Display price information
+  if (priceDisplay && priceAmount && priceBreakdown) {
+    priceDisplay.style.display = 'block';
+    priceAmount.textContent = `RM ${tripInfo.price.toFixed(2)}`;
+
+    let breakdownText = `Distance: ${tripInfo.distance} units | Base: RM ${tripInfo.priceBreakdown.basePrice.toFixed(2)}`;
+    if (tripInfo.priceBreakdown.distanceCharge > 0) {
+      breakdownText += ` | Distance charge: RM ${tripInfo.priceBreakdown.distanceCharge.toFixed(2)}`;
+    }
+    if (tripInfo.isStudent) {
+      breakdownText += ` | Student discount: -RM ${tripInfo.priceBreakdown.studentDiscount.toFixed(2)}`;
+    }
+
+    priceBreakdown.textContent = breakdownText;
+  }
+}
