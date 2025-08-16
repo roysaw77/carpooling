@@ -69,10 +69,28 @@
           <!-- Accepted passengers will be displayed here -->
         </div>
       </div>
+
+      <!-- Ride Needs Section (for drivers to see passenger requests) -->
+      <div class="card" id="ride-needs-section" style="display: none;">
+        <h2>📢 Passenger Requests</h2>
+        <p>Students looking for rides - offer to drive them!</p>
+        <div id="ride-needs-list">
+          <!-- Passenger ride needs will be displayed here -->
+        </div>
+      </div>
     </div>
 
     <!-- Seater Mode Content -->
     <div id="seater-mode" style="display: none;">
+      <!-- Post Ride Need Section -->
+      <div class="card">
+        <h2>🙋 Need a Ride?</h2>
+        <p>Post your ride request and let drivers offer to help you!</p>
+        <button class="btn-primary" onclick="openRideNeedPopup()">
+          📢 Post Ride Request
+        </button>
+      </div>
+
       <!-- Available Rides for Seaters -->
       <div class="card">
         <h2>Available Rides</h2>
@@ -86,6 +104,14 @@
         <h2>📋 My Ride Requests</h2>
         <div id="my-requests-list">
           <!-- User's own ride requests will be displayed here -->
+        </div>
+      </div>
+
+      <!-- My Posted Needs -->
+      <div class="card" id="my-needs-section" style="display: none;">
+        <h2>📢 My Posted Requests</h2>
+        <div id="my-needs-list">
+          <!-- User's own ride needs will be displayed here -->
         </div>
       </div>
     </div>
@@ -129,6 +155,7 @@
   <script src="js/rides.js"></script>
   <script src="js/requests.js"></script>
   <script src="js/passengers.js"></script>
+  <script src="js/ride-needs.js"></script>
   <script src="js/popup.js"></script>
   <script src="js/app-main.js"></script>
 </body>

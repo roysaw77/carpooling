@@ -5,12 +5,14 @@
 let rides = [];
 let rideRequests = [];
 let acceptedPassengers = [];
+let rideNeeds = []; // Seater-posted ride requests that drivers can fulfill
 let currentUserRole = null; // 'driver' or 'seater'
 
 // Make variables globally available
 window.rides = rides;
 window.rideRequests = rideRequests;
 window.acceptedPassengers = acceptedPassengers;
+window.rideNeeds = rideNeeds;
 window.currentUserRole = currentUserRole;
 
 // Initialize data from localStorage
@@ -19,17 +21,17 @@ function initializeData() {
     rides = window.Storage.loadRides();
     rideRequests = window.Storage.loadRideRequests();
     acceptedPassengers = window.Storage.loadAcceptedPassengers() || [];
+    rideNeeds = window.Storage.loadRideNeeds() || [];
 
     // Update global references
     window.rides = rides;
     window.rideRequests = rideRequests;
     window.acceptedPassengers = acceptedPassengers;
+    window.rideNeeds = rideNeeds;
   } else {
     console.warn('localStorage not available, data will not persist');
   }
-}
-
-// Utility function to format date/time
+}// Utility function to format date/time
 function formatDateTime(dateString) {
   if (!dateString) return 'Unknown';
 

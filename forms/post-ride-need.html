@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Ride Need Form</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+  <div class="popup-overlay" id="ride-need-popup-overlay">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>📢 Post Your Ride Request</h2>
+        <button class="close-btn" onclick="closeRideNeedPopup()">&times;</button>
+      </div>
+      <form id="ride-need-form">
+        <div class="form-group">
+          <label for="need-passenger-name">Your Name:</label>
+          <input type="text" id="need-passenger-name" name="need-passenger-name"
+            placeholder="What should drivers call you?" required>
+        </div>
+
+        <div class="form-group">
+          <label for="need-student-id">Student ID (MMU Verification):</label>
+          <input type="text" id="need-student-id" name="need-student-id" placeholder="e.g., 1234567890"
+            pattern="[0-9]{10}" maxlength="10" required>
+          <small style="color: #666; font-size: 12px;">Enter your 10-digit MMU Student ID for verification</small>
+        </div>
+
+        <div class="form-group">
+          <label for="need-contact-number">Contact Number:</label>
+          <input type="tel" id="need-contact-number" name="need-contact-number" placeholder="e.g., +60123456789"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="need-start">Pickup Location:</label>
+          <select id="need-start" name="need-start" required>
+            <option value="">Select pickup location</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="need-destination">Destination:</label>
+          <select id="need-destination" name="need-destination" required>
+            <option value="">Select destination</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="need-time">Preferred Departure Time:</label>
+          <input type="datetime-local" id="need-time" name="need-time" required>
+        </div>
+
+        <div class="form-group">
+          <label for="need-passenger-count">How many people will be traveling?</label>
+          <select id="need-passenger-count" name="need-passenger-count" required>
+            <option value="">Select number of passengers</option>
+            <option value="1">Just me (1 person)</option>
+            <option value="2">2 people</option>
+            <option value="3">3 people</option>
+            <option value="4">4 people</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="need-max-price">Maximum Price You're Willing to Pay (RM):</label>
+          <input type="number" id="need-max-price" name="need-max-price" placeholder="e.g., 15" step="0.50" min="0"
+            max="100">
+          <small style="color: #666; font-size: 12px;">Optional - helps drivers know your budget</small>
+        </div>
+
+        <div class="form-group">
+          <label for="need-additional-notes">Additional Notes (Optional):</label>
+          <textarea id="need-additional-notes" name="need-additional-notes" rows="3"
+            placeholder="Flexible timing? Special requests? Any additional information for drivers..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closeRideNeedPopup()">Cancel</button>
+          <button type="button" class="btn-submit" onclick="submitRideNeed()">Post Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/locations.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+
+</html>

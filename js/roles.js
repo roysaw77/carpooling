@@ -16,6 +16,7 @@ function switchToDriverMode() {
   if (typeof displayDriverRides === 'function') displayDriverRides();
   if (typeof displayDriverRequests === 'function') displayDriverRequests();
   if (typeof displayMyPassengers === 'function') displayMyPassengers();
+  if (typeof displayRideNeeds === 'function') displayRideNeeds();
 }
 
 function switchToSeaterMode() {
@@ -32,6 +33,7 @@ function switchToSeaterMode() {
   // Load seater-specific data
   if (typeof displayAvailableRides === 'function') displayAvailableRides();
   if (typeof displayMyRequests === 'function') displayMyRequests();
+  if (typeof displayMyRideNeeds === 'function') displayMyRideNeeds();
 }
 
 // Make functions globally available

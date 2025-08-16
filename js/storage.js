@@ -4,7 +4,8 @@
 const STORAGE_KEYS = {
   RIDES: 'mmu_carpool_rides',
   RIDE_REQUESTS: 'mmu_carpool_ride_requests',
-  ACCEPTED_PASSENGERS: 'mmu_carpool_accepted_passengers'
+  ACCEPTED_PASSENGERS: 'mmu_carpool_accepted_passengers',
+  RIDE_NEEDS: 'mmu_carpool_ride_needs'
 };
 
 // Local Storage Functions
@@ -69,12 +70,33 @@ const Storage = {
     }
   },
 
+  // Save ride needs to localStorage
+  saveRideNeeds: function (rideNeeds) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.RIDE_NEEDS, JSON.stringify(rideNeeds));
+    } catch (error) {
+      console.error('Error saving ride needs to localStorage:', error);
+    }
+  },
+
+  // Load ride needs from localStorage
+  loadRideNeeds: function () {
+    try {
+      const savedRideNeeds = localStorage.getItem(STORAGE_KEYS.RIDE_NEEDS);
+      return savedRideNeeds ? JSON.parse(savedRideNeeds) : [];
+    } catch (error) {
+      console.error('Error loading ride needs from localStorage:', error);
+      return [];
+    }
+  },
+
   // Clear all stored data (useful for debugging or reset)
   clearAll: function () {
     try {
       localStorage.removeItem(STORAGE_KEYS.RIDES);
       localStorage.removeItem(STORAGE_KEYS.RIDE_REQUESTS);
       localStorage.removeItem(STORAGE_KEYS.ACCEPTED_PASSENGERS);
+      localStorage.removeItem(STORAGE_KEYS.RIDE_NEEDS);
       console.log('All carpool data cleared from localStorage');
     } catch (error) {
       console.error('Error clearing localStorage:', error);

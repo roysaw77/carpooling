@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer to Drive</title>
+  <link rel="stylesheet" href="../css/popup.css">
+</head>
+
+<body>
+  <!-- Driver Offer Popup Overlay -->
+  <div id="offer-popup-overlay" class="popup-overlay">
+    <div class="popup-content">
+      <h2>🚗 Offer to Drive</h2>
+      <form id="offer-form">
+        <div class="form-group">
+          <label for="driver-name">Your Name *</label>
+          <input type="text" id="driver-name" name="driverName" required placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label for="driver-contact">Contact Number *</label>
+          <input type="tel" id="driver-contact" name="driverContact" required placeholder="e.g., 011-12345678">
+        </div>
+
+        <div class="form-group">
+          <label for="car-brand">Car Brand *</label>
+          <select id="car-brand" name="carBrand" required>
+            <option value="">Select car brand</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Honda">Honda</option>
+            <option value="Nissan">Nissan</option>
+            <option value="Mazda">Mazda</option>
+            <option value="Mitsubishi">Mitsubishi</option>
+            <option value="Suzuki">Suzuki</option>
+            <option value="Hyundai">Hyundai</option>
+            <option value="Kia">Kia</option>
+            <option value="BMW">BMW</option>
+            <option value="Mercedes-Benz">Mercedes-Benz</option>
+            <option value="Audi">Audi</option>
+            <option value="Volkswagen">Volkswagen</option>
+            <option value="Ford">Ford</option>
+            <option value="Chevrolet">Chevrolet</option>
+            <option value="Peugeot">Peugeot</option>
+            <option value="Proton">Proton</option>
+            <option value="Perodua">Perodua</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="car-model">Car Model *</label>
+          <input type="text" id="car-model" name="carModel" required placeholder="e.g., Vios, City, Almera">
+        </div>
+
+        <div class="form-group">
+          <label for="car-color">Car Color *</label>
+          <select id="car-color" name="carColor" required>
+            <option value="">Select car color</option>
+            <option value="White">White</option>
+            <option value="Black">Black</option>
+            <option value="Silver">Silver</option>
+            <option value="Grey">Grey</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Green">Green</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Orange">Orange</option>
+            <option value="Purple">Purple</option>
+            <option value="Brown">Brown</option>
+            <option value="Gold">Gold</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="license-plate">License Plate *</label>
+          <input type="text" id="license-plate" name="licensePlate" required placeholder="e.g., ABC1234, WPP1234K"
+            style="text-transform: uppercase;">
+        </div>
+
+        <div class="form-group">
+          <label for="pickup-details">Pickup Details</label>
+          <textarea id="pickup-details" name="pickupDetails" rows="3"
+            placeholder="Any specific pickup instructions or landmarks near the pickup location..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="driver-notes">Additional Notes</label>
+          <textarea id="driver-notes" name="driverNotes" rows="2"
+            placeholder="Any additional information for the passenger..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeOfferPopup()">Cancel</button>
+          <button type="submit" class="btn-primary">🚗 Confirm Offer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

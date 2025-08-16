@@ -706,7 +706,329 @@ function clearRequestForm() {
   document.getElementById('additional-notes').value = '';
 }
 
+// Ride Need Popup Functions (for seaters to post their ride requests)
+function openRideNeedPopup() {
+  // Load the ride need popup content if it doesn't exist
+  if (!document.getElementById('ride-need-popup-overlay')) {
+    loadRideNeedPopupForm();
+  } else {
+    showRideNeedPopup();
+  }
+}
+
+function showRideNeedPopup() {
+  const overlay = document.getElementById('ride-need-popup-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeRideNeedPopup() {
+  const overlay = document.getElementById('ride-need-popup-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+}
+
+function loadRideNeedPopupForm() {
+  fetch('forms/post-ride-need.html')
+    .then(response => response.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const popupOverlay = doc.getElementById('ride-need-popup-overlay');
+
+      if (popupOverlay) {
+        document.body.appendChild(popupOverlay);
+
+        // Initialize location dropdowns for ride need form
+        initializeRideNeedLocationDropdowns();
+
+        showRideNeedPopup();
+
+        popupOverlay.addEventListener('click', function (e) {
+          if (e.target === popupOverlay) {
+            closeRideNeedPopup();
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error loading ride need form:', error);
+      alert('Error loading request form. Please try again.');
+    });
+}
+
+function initializeRideNeedLocationDropdowns() {
+  if (window.LocationService) {
+    const locationOptions = window.LocationService.generateLocationOptions();
+
+    const startSelect = document.getElementById('need-start');
+    if (startSelect) {
+      startSelect.innerHTML = locationOptions;
+    }
+
+    const destinationSelect = document.getElementById('need-destination');
+    if (destinationSelect) {
+      destinationSelect.innerHTML = locationOptions;
+    }
+  }
+}
+
+function submitRideNeed() {
+  const passengerName = document.getElementById('need-passenger-name').value;
+  const studentId = document.getElementById('need-student-id').value;
+  const contactNumber = document.getElementById('need-contact-number').value;
+  const startId = document.getElementById('need-start').value;
+  const destinationId = document.getElementById('need-destination').value;
+  const time = document.getElementById('need-time').value;
+  const passengerCount = document.getElementById('need-passenger-count').value;
+  const maxPrice = document.getElementById('need-max-price').value;
+  const additionalNotes = document.getElementById('need-additional-notes').value;
+
+  // Validate required fields
+  if (!passengerName || !studentId || !contactNumber || !startId || !destinationId || !time || !passengerCount) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  // Validate student ID format
+  if (!/^\d{10}$/.test(studentId)) {
+    alert("Please enter a valid 10-digit Student ID.");
+    return;
+  }
+
+  // Get location names
+  let startName = startId;
+  let destinationName = destinationId;
+
+  if (window.LocationService) {
+    const startLocation = window.LocationService.getLocationById(startId);
+    const destinationLocation = window.LocationService.getLocationById(destinationId);
+    startName = startLocation ? startLocation.name : startId;
+    destinationName = destinationLocation ? destinationLocation.name : destinationId;
+  }
+
+  // Create ride need object
+  const rideNeed = {
+    id: Date.now(),
+    passengerName: passengerName,
+    studentId: studentId,
+    contactNumber: contactNumber,
+    start: startName,
+    destination: destinationName,
+    startId: parseInt(startId),
+    destinationId: parseInt(destinationId),
+    time: time,
+    passengerCount: parseInt(passengerCount),
+    maxPrice: maxPrice ? parseFloat(maxPrice) : null,
+    additionalNotes: additionalNotes,
+    postedTime: new Date().toISOString(),
+    status: 'open' // open, fulfilled, cancelled
+  };
+
+  // Add to ride needs
+  if (!window.rideNeeds) {
+    window.rideNeeds = [];
+  }
+  window.rideNeeds.push(rideNeed);
+
+  // Save to localStorage
+  if (window.Storage) {
+    window.Storage.saveRideNeeds(window.rideNeeds);
+  }
+
+  // Refresh displays
+  if (typeof displayRideNeeds === 'function') displayRideNeeds();
+  if (typeof displayMyRideNeeds === 'function') displayMyRideNeeds();
+
+  // Clear form and close popup
+  clearRideNeedForm();
+  closeRideNeedPopup();
+
+  alert('Your ride request has been posted! Drivers will be able to see it and offer to help.');
+}
+
+function clearRideNeedForm() {
+  document.getElementById('need-passenger-name').value = '';
+  document.getElementById('need-student-id').value = '';
+  document.getElementById('need-contact-number').value = '';
+  document.getElementById('need-start').value = '';
+  document.getElementById('need-destination').value = '';
+  document.getElementById('need-time').value = '';
+  document.getElementById('need-passenger-count').value = '';
+  document.getElementById('need-max-price').value = '';
+  document.getElementById('need-additional-notes').value = '';
+}
+
+// Driver Offer Popup Functions
+function openOfferPopup(needIndex) {
+  // Store the need index for later use
+  window.currentOfferNeedIndex = needIndex;
+
+  // Load the popup content if it doesn't exist
+  if (!document.getElementById('offer-popup-overlay')) {
+    loadOfferForm();
+  } else {
+    showOfferPopup();
+  }
+}
+
+function showOfferPopup() {
+  const overlay = document.getElementById('offer-popup-overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeOfferPopup() {
+  const overlay = document.getElementById('offer-popup-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+}
+
+function loadOfferForm() {
+  fetch('forms/offer-drive.html')
+    .then(response => response.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const popupOverlay = doc.getElementById('offer-popup-overlay');
+
+      if (popupOverlay) {
+        document.body.appendChild(popupOverlay);
+
+        // Add form submit handler
+        const form = document.getElementById('offer-form');
+        if (form) {
+          form.addEventListener('submit', submitDriverOffer);
+        }
+
+        showOfferPopup();
+
+        // Add event listener for clicking outside the popup to close it
+        popupOverlay.addEventListener('click', function (e) {
+          if (e.target === popupOverlay) {
+            closeOfferPopup();
+          }
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error loading offer form:', error);
+      alert('Error loading offer form. Please try again.');
+    });
+}
+
+function submitDriverOffer(event) {
+  event.preventDefault();
+
+  const needIndex = window.currentOfferNeedIndex;
+  if (!window.rideNeeds || !window.rideNeeds[needIndex]) {
+    alert('Error: Ride request not found.');
+    return;
+  }
+
+  const need = window.rideNeeds[needIndex];
+
+  if (need.status !== 'open') {
+    alert('This ride request is no longer available.');
+    closeOfferPopup();
+    return;
+  }
+
+  // Get form data
+  const formData = new FormData(event.target);
+  const driverName = formData.get('driverName').trim();
+  const driverContact = formData.get('driverContact').trim();
+  const carBrand = formData.get('carBrand');
+  const carModel = formData.get('carModel').trim();
+  const carColor = formData.get('carColor');
+  const licensePlate = formData.get('licensePlate').trim().toUpperCase();
+  const pickupDetails = formData.get('pickupDetails').trim();
+  const driverNotes = formData.get('driverNotes').trim();
+
+  // Validate required fields
+  if (!driverName || !driverContact || !carBrand || !carModel || !carColor || !licensePlate) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  // Create car info string
+  const carInfo = `${carColor} ${carBrand} ${carModel} - ${licensePlate}`;
+
+  // Create a ride offer
+  const rideOffer = {
+    id: Date.now(),
+    driver: driverName,
+    driverContact: driverContact,
+    carInfo: carInfo,
+    carDetails: {
+      brand: carBrand,
+      model: carModel,
+      color: carColor,
+      licensePlate: licensePlate
+    },
+    pickupDetails: pickupDetails,
+    driverNotes: driverNotes,
+    start: need.start,
+    destination: need.destination,
+    time: need.time,
+    seats: need.passengerCount,
+    passengerName: need.passengerName,
+    passengerContact: need.contactNumber,
+    needId: need.id,
+    createdAt: new Date().toISOString()
+  };
+
+  // Add to rides array
+  if (!window.rides) {
+    window.rides = [];
+  }
+  window.rides.push(rideOffer);
+
+  // Mark the need as fulfilled
+  need.status = 'fulfilled';
+  need.fulfilledBy = driverName;
+  need.fulfilledAt = new Date().toISOString();
+
+  // Save to localStorage
+  if (window.Storage) {
+    window.Storage.saveRides(window.rides);
+    window.Storage.saveRideNeeds(window.rideNeeds);
+  }
+
+  // Close popup and clear form
+  closeOfferPopup();
+  clearOfferForm();
+
+  // Refresh displays
+  if (typeof displayRideNeeds === 'function') displayRideNeeds();
+  if (typeof displayMyRideNeeds === 'function') displayMyRideNeeds();
+  if (typeof displayDriverRides === 'function') displayDriverRides();
+
+  alert(`Great! You've offered to drive ${need.passengerName}. Your offer has been submitted. Contact them at ${need.contactNumber} to arrange pickup details.`);
+}
+
+function clearOfferForm() {
+  const form = document.getElementById('offer-form');
+  if (form) {
+    form.reset();
+  }
+}
+
 // Make functions globally available
 window.openRideRequestPopup = openRideRequestPopup;
 window.closeRequestPopup = closeRequestPopup;
 window.submitRideRequest = submitRideRequest;
+window.openRideNeedPopup = openRideNeedPopup;
+window.closeRideNeedPopup = closeRideNeedPopup;
+window.submitRideNeed = submitRideNeed;
+window.openOfferPopup = openOfferPopup;
+window.closeOfferPopup = closeOfferPopup;
+window.submitDriverOffer = submitDriverOffer;
