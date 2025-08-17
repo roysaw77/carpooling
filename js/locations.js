@@ -16,9 +16,6 @@ const CYBERJAYA_LOCATIONS = [
   { id: 10, name: "Cyberia SmartHomes", area: "Residential" },
   { id: 11, name: "Putrajaya Sentral", area: "Transport" },
   { id: 12, name: "IOI City Mall", area: "Commercial" },
-  { id: 13, name: "Puchong LRT Station", area: "Transport" },
-  { id: 14, name: "KLIA Transit Cyberjaya", area: "Transport" },
-  { id: 15, name: "Sepang International Circuit", area: "Recreation" }
 ];
 
 // Pricing configuration

@@ -29,6 +29,14 @@ function displayRides() {
       carInfoHtml = `<br>🚗 <strong>${ride.car.name}</strong> - ${ride.car.color} - <strong>${ride.car.plateNumber}</strong>`;
     }
 
+    // Add indicator if this ride was created from a fulfilled request
+    const fulfilledInfo = ride.needId ? `<br>📋 <span style="color: #007bff; font-size: 12px;">Fulfilled ride request</span>` : '';
+
+    // Hide edit button for rides created from accepted requests (fulfilled requests)
+    const editButtonHtml = ride.needId ?
+      '' : // No edit button for fulfilled requests
+      `<button onclick="editRide(${index})" class="edit-btn">✏️ Edit Ride</button>`;
+
     list.innerHTML += `
       <div class="ride">
         <div class="ride-header">
@@ -37,11 +45,11 @@ function displayRides() {
         <div class="ride-details">
           Route: ${ride.start} → ${ride.destination}<br>
           Time: ${new Date(ride.time).toLocaleString()}<br>
-          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}
+          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}${fulfilledInfo}
         </div>
         <div class="ride-actions">
           ${requestButtonHtml}
-          <button onclick="editRide(${index})" class="edit-btn">✏️ Edit Ride</button>
+          ${editButtonHtml}
           <button onclick="deleteRide(${index})" class="delete-btn">🗑️ Delete</button>
         </div>
       </div>
@@ -83,6 +91,14 @@ function displayDriverRides() {
     const requestsInfo = rideRequestsForThisRide.length > 0 ?
       `<br><span class="requests-indicator">📋 ${rideRequestsForThisRide.length} request(s) pending</span>` : '';
 
+    // Add indicator if this ride was created from a fulfilled request
+    const fulfilledInfo = ride.needId ? `<br>📋 <span style="color: #007bff; font-size: 12px;">Fulfilled ride request for ${ride.passengerName}</span>` : '';
+
+    // Hide edit button for rides created from accepted requests (fulfilled requests)
+    const editButtonHtml = ride.needId ?
+      '' : // No edit button for fulfilled requests
+      `<button onclick="editRide(${index})" class="edit-btn">✏️ Edit Ride</button>`;
+
     list.innerHTML += `
       <div class="ride driver-ride">
         <div class="ride-header">
@@ -91,10 +107,10 @@ function displayDriverRides() {
         <div class="ride-details">
           Route: ${ride.start} → ${ride.destination}<br>
           Time: ${new Date(ride.time).toLocaleString()}<br>
-          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}${requestsInfo}
+          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}${requestsInfo}${fulfilledInfo}
         </div>
         <div class="ride-actions">
-          <button onclick="editRide(${index})" class="edit-btn">✏️ Edit Ride</button>
+          ${editButtonHtml}
           <button onclick="deleteRide(${index})" class="delete-btn">🗑️ Delete</button>
         </div>
       </div>
@@ -130,6 +146,9 @@ function displayAvailableRides() {
       carInfoHtml = `<br>🚗 <strong>${ride.car.name}</strong> - ${ride.car.color} - <strong>${ride.car.plateNumber}</strong>`;
     }
 
+    // Add indicator if this ride was created from a fulfilled request
+    const fulfilledInfo = ride.needId ? `<br>📋 <span style="color: #007bff; font-size: 12px;">Fulfilled ride request</span>` : '';
+
     list.innerHTML += `
       <div class="ride">
         <div class="ride-header">
@@ -138,7 +157,7 @@ function displayAvailableRides() {
         <div class="ride-details">
           Route: ${ride.start} → ${ride.destination}<br>
           Time: ${new Date(ride.time).toLocaleString()}<br>
-          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}
+          Available Seats: ${seatsAvailable}${priceInfo}${distanceInfo}${carInfoHtml}${fulfilledInfo}
         </div>
         <div class="ride-actions">
           ${requestButtonHtml}

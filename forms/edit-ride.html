@@ -23,11 +23,22 @@
         </div>
         <div class="form-group">
           <label for="edit-start">Start Location:</label>
-          <input type="text" id="edit-start" name="edit-start" required>
+          <select id="edit-start" name="edit-start" required>
+            <!-- Options will be populated by JavaScript -->
+          </select>
         </div>
         <div class="form-group">
           <label for="edit-destination">Destination:</label>
-          <input type="text" id="edit-destination" name="edit-destination" required>
+          <select id="edit-destination" name="edit-destination" required>
+            <!-- Options will be populated by JavaScript -->
+          </select>
+        </div>
+        <div class="form-group" id="edit-price-display" style="display: none;">
+          <label>Estimated Price:</label>
+          <div id="edit-price-info" class="price-info">
+            <span id="edit-price-amount">RM 0.00</span>
+            <small id="edit-price-breakdown"></small>
+          </div>
         </div>
         <div class="form-group">
           <label for="edit-time">Date & Time:</label>
@@ -89,6 +100,7 @@
     </div>
   </div>
 
+  <script src="js/locations.js"></script>
   <script src="js/popup.js"></script>
 </body>
 
